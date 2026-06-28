@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="timer">
+      <h1>00:00:00</h1>
+    </div>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <button id="reset">reset</button>
+
+    <script>
+      let timer;
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
+      let Interval;
+      const clock = function () {
+        Interval = setInterval(() => {
+          seconds++;
+          if (seconds == 60) {
+            minutes++;
+            seconds = 0;
+          }
+          if (minutes == 60) {
+            hours++;
+            minutes = 0;
+          }
+          updateTimer(hours, minutes, seconds);
+        }, 1000);
+      };
+      const updateTimer = function (hours, minutes, seconds) {
+        const timerDisplay = document.querySelector("#timer h1");
+        timerDisplay.innerText = `${String(hours)}:${String(minutes)}:${String(
+          seconds
+        )}`;
+      };
+      const start = document
+        .getElementById("start")
+        .addEventListener("click", () => {
+          if (!Interval) {
+            clock();
+          }
+        });
+      const stop = document
+        .getElementById("stop")
+        .addEventListener("click", () => {
+          clearInterval(Interval);
+          Interval = null;
+        });
+      const reset = document
+        .getElementById("reset")
+        .addEventListener("click", () => {
+          clearInterval(Interval);
+          Interval = null;
+          hours = 0;
+          minutes = 0;
+          seconds = 0;
+          updateTimer(hours, minutes, seconds);
+        });
+    </script>
+  </body>
+</html>
+
+<!-- 
+1. basics is ok -> clock will work
+2. error will come while user click on start multiple times -> to resolve we have to ckeck in start that Iterval is null or not , if it is null then we call clock otherwise we will not
+3. And on stop and reset - we will set Interval to null 
+-->
